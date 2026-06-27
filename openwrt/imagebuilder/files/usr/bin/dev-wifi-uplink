@@ -1,0 +1,28 @@
+#!/bin/sh
+
+if [ "$#" -lt 2 ]; then
+	echo "Usage: dev-wifi-uplink <upstream-ssid> <upstream-password> [country] [2g|5g]" >&2
+	exit 2
+fi
+
+ssid="$1"
+key="$2"
+country="${3:-VN}"
+band="${4:-2g}"
+
+uci -q set wireless.radio0.country="$country"
+uci -q set wireless.radio0.band="$band"
+if [ "$band" = "2g" ]; then
+	uci -q set wireless.radio0.htmode='HT20'
+else
+	uci -q set wireless.radio0.htmode='VHT80'
+fi
+uci -q set wireless.dev_sta.ssid="$ssid"
+uci -q set wireless.dev_sta.key="$key"
+uci -q set wireless.dev_sta.encryption='psk2'
+uci -q set wireless.dev_sta.disabled='0'
+uci commit wireless
+/etc/init.d/dev-wifi-recovery restart
+
+echo "Wi-Fi uplink scheduled. AP fallback remains enabled if association fails."
+echo "Check with: ubus call network.interface.wwan status"

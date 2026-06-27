@@ -1,0 +1,101 @@
+Start testing: Jun 25 22:14 +07
+----------------------------------------------------------
+1/6 Testing: state_machine
+1/6 Test: state_machine
+Command: "/mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d/build-live/test_state_machine"
+Directory: /mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d/build-live
+"state_machine" start time: Jun 25 22:14 +07
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"state_machine" end time: Jun 25 22:14 +07
+"state_machine" time elapsed: 00:00:00
+----------------------------------------------------------
+
+2/6 Testing: soap
+2/6 Test: soap
+Command: "/mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d/build-live/test_soap"
+Directory: /mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d/build-live
+"soap" start time: Jun 25 22:14 +07
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.03 sec
+----------------------------------------------------------
+Test Passed.
+"soap" end time: Jun 25 22:14 +07
+"soap" time elapsed: 00:00:00
+----------------------------------------------------------
+
+3/6 Testing: md5
+3/6 Test: md5
+Command: "/mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d/build-live/test_md5"
+Directory: /mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d/build-live
+"md5" start time: Jun 25 22:14 +07
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"md5" end time: Jun 25 22:14 +07
+"md5" time elapsed: 00:00:00
+----------------------------------------------------------
+
+4/6 Testing: connection_request
+4/6 Test: connection_request
+Command: "/mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d/build-live/test_connection_request"
+Directory: /mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d/build-live
+"connection_request" start time: Jun 25 22:14 +07
+Output:
+----------------------------------------------------------
+2026-06-25T22:14:09+0700 [INFO] Connection Request server listening on 127.0.0.1:17547
+2026-06-25T22:14:09+0700 [INFO] Connection Request HTTP: GET /connection-request HTTP/1.1
+2026-06-25T22:14:09+0700 [WARN] [CONNECTION_REQUEST] digest authorization missing
+2026-06-25T22:14:09+0700 [INFO] Connection Request HTTP: GET /connection-request HTTP/1.1
+2026-06-25T22:14:09+0700 [INFO] [CONNECTION_REQUEST] digest authorization accepted username=cpe uri=/connection-request
+2026-06-25T22:14:09+0700 [INFO] Connection Request server listening on 127.0.0.1:17547
+2026-06-25T22:14:09+0700 [INFO] Connection Request HTTP: POST /connection-request HTTP/1.1
+<end of output>
+Test time =   0.02 sec
+----------------------------------------------------------
+Test Passed.
+"connection_request" end time: Jun 25 22:14 +07
+"connection_request" time elapsed: 00:00:00
+----------------------------------------------------------
+
+5/6 Testing: transformer
+5/6 Test: transformer
+Command: "/mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d/build-live/test_transformer"
+Directory: /mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d/build-live
+"transformer" start time: Jun 25 22:14 +07
+Output:
+----------------------------------------------------------
+transformer: UCI committed but ubus tr69 reload notification failed
+<end of output>
+Test time =   0.59 sec
+----------------------------------------------------------
+Test Passed.
+"transformer" end time: Jun 25 22:14 +07
+"transformer" time elapsed: 00:00:00
+----------------------------------------------------------
+
+6/6 Testing: hot_reload
+6/6 Test: hot_reload
+Command: "/usr/bin/bash" "/mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d/tests/test_hot_reload.sh" "/mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d/build-live/tr69d" "/mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d"
+Directory: /mnt/c/Users/DELL/Desktop/Mock_tr69_clone/Mock_Tr69d/build-live
+"hot_reload" start time: Jun 25 22:14 +07
+Output:
+----------------------------------------------------------
+<end of output>
+Test time =   2.03 sec
+----------------------------------------------------------
+Test Passed.
+"hot_reload" end time: Jun 25 22:14 +07
+"hot_reload" time elapsed: 00:00:02
+----------------------------------------------------------
+
+End testing: Jun 25 22:14 +07

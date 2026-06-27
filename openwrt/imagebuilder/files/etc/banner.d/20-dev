@@ -1,0 +1,3 @@
+dev Raspberry Pi 5 OpenWrt CPE
+LAN/AP: 192.168.8.1 | mDNS: dev-rpi5.local
+TR-069: /etc/init.d/tr69 | Transformer: trg / trs

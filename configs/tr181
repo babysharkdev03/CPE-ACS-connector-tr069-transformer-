@@ -1,0 +1,8 @@
+config device 'device'
+	option manufacturer 'dev'
+	option manufacturer_oui '000000'
+	option product_class 'OpenWrt-RPi5'
+	option model_name 'Raspberry Pi 5'
+	option serial_number 'RPI5-DEMO-001'
+	option software_version 'OpenWrt 25.12.4'
+	option root_data_model_version '2.18'

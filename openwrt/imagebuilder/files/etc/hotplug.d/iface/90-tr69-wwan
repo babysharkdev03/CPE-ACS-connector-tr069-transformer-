@@ -1,0 +1,11 @@
+#!/bin/sh
+
+[ "$ACTION" = "ifup" ] || exit 0
+[ "$INTERFACE" = "wwan" ] || exit 0
+
+# The first Inform may happen before Wi-Fi associates. Wake the persistent
+# daemon through ubus once the uplink has an address; never restart the process.
+(
+	ubus -t 15 wait_for tr69 >/dev/null 2>&1 || exit 0
+	ubus call tr69 reconnect '{}' >/dev/null 2>&1
+) &

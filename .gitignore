@@ -1,0 +1,4 @@
+/build-host/
+/.openwrt-build/
+/docker/acs-mock/data/
+/docker/acs-mock/*.log

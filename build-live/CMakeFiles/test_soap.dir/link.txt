@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/test_soap.dir/tests/test_soap.cpp.o -o test_soap  libtr069_core.a /usr/lib/x86_64-linux-gnu/libcurl.so /usr/lib/x86_64-linux-gnu/libxml2.so /usr/lib/x86_64-linux-gnu/liblua5.4.so 

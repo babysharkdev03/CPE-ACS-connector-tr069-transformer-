@@ -1,0 +1,40 @@
+#!/bin/sh
+
+is_wwan_up() {
+	[ "$(ifstatus wwan 2>/dev/null | jsonfilter -e '@.up' 2>/dev/null)" = "true" ]
+}
+
+fallback_ap() {
+	uci -q set wireless.dev_sta.disabled='1'
+	uci commit wireless
+	wifi reload
+}
+
+# Guarantee a visible WPA2 2.4 GHz AP before attempting the single-radio STA.
+uci -q set wireless.radio0.disabled='0'
+uci -q set wireless.radio0.country='@WIFI_COUNTRY@'
+uci -q set wireless.radio0.band='2g'
+uci -q set wireless.radio0.htmode='HT20'
+fallback_ap
+sleep 8
+
+while true; do
+	uci -q set wireless.dev_sta.disabled='0'
+	uci commit wireless
+	wifi reload
+
+	connected=0
+	for wait_step in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do
+		sleep 2
+		if is_wwan_up; then connected=1; break; fi
+	done
+
+	if [ "$connected" -eq 1 ]; then
+		# Keep AP+STA active; retry only after the uplink is lost.
+		while is_wwan_up; do sleep 30; done
+	else
+		logger -t dev-wifi "uplink unavailable; restoring AP-only fallback"
+		fallback_ap
+		sleep 60
+	fi
+done

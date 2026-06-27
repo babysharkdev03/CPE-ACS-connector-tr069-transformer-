@@ -1,0 +1,90 @@
+-- TR-181 subset exposed by the mock tr69d client.
+-- UCI locations live here, never in the CWMP/RPC C++ implementation.
+
+local function uci(section, option, attributes)
+  local spec = attributes or {}
+  spec.uci = { config = "tr69", section = section, option = option }
+  return spec
+end
+
+return {
+  parameters = {
+    ["Device.RootDataModelVersion"] = {
+      access = "readOnly", type = "string", default = "2.18"
+    },
+    ["Device.DeviceInfo.Manufacturer"] = {
+      access = "readOnly", type = "string", default = "dev"
+    },
+    ["Device.DeviceInfo.ManufacturerOUI"] = {
+      access = "readOnly", type = "string", default = "000000"
+    },
+    ["Device.DeviceInfo.ProductClass"] = {
+      access = "readOnly", type = "string", default = "OpenWrt-RPi5"
+    },
+    ["Device.DeviceInfo.ModelName"] = {
+      access = "readOnly", type = "string", default = "Raspberry Pi 5"
+    },
+    ["Device.DeviceInfo.SerialNumber"] = {
+      access = "readOnly", type = "string", getter = "serial_number", default = "UNKNOWN"
+    },
+    ["Device.DeviceInfo.SoftwareVersion"] = {
+      access = "readOnly", type = "string", getter = "software_version", default = "OpenWrt"
+    },
+
+    ["Device.ManagementServer.EnableCWMP"] = uci("mgmt_srv", "enable", {
+      access = "readWrite", type = "boolean", default = "true"
+    }),
+    ["Device.ManagementServer.URL"] = uci("mgmt_srv", "url", {
+      access = "readWrite", type = "string", max = 512, required = true
+    }),
+    ["Device.ManagementServer.Username"] = uci("mgmt_srv", "username", {
+      access = "readWrite", type = "string", max = 256
+    }),
+    ["Device.ManagementServer.Password"] = uci("mgmt_srv", "password", {
+      access = "readWrite", type = "string", max = 256, secret = true
+    }),
+    ["Device.ManagementServer.ParameterKey"] = uci("mgmt_srv", "parameter_key", {
+      access = "readOnly", type = "string", max = 32, default = ""
+    }),
+    ["Device.ManagementServer.PeriodicInformEnable"] = uci("periodic_inform", "enable", {
+      access = "readWrite", type = "boolean", default = "true"
+    }),
+    ["Device.ManagementServer.PeriodicInformInterval"] = uci("periodic_inform", "interval", {
+      access = "readWrite", type = "unsignedInt", range = { { min = 1, max = 4294967295 } },
+      default = "300"
+    }),
+    ["Device.ManagementServer.PeriodicInformTime"] = uci("periodic_inform", "time", {
+      access = "readWrite", type = "dateTime", default = "1970-01-01T00:00:00Z"
+    }),
+    ["Device.ManagementServer.ConnectionRequestUsername"] = uci("conn_request", "username", {
+      access = "readWrite", type = "string", max = 256
+    }),
+    ["Device.ManagementServer.ConnectionRequestPassword"] = uci("conn_request", "password", {
+      access = "readWrite", type = "string", max = 256, secret = true
+    }),
+    ["Device.ManagementServer.ConnectionRequestAuthentication"] = uci("conn_request", "auth", {
+      access = "readWrite", type = "string", enumeration = { "None", "Digest" },
+      default = "None"
+    }),
+    ["Device.ManagementServer.ConnectionRequestURL"] = {
+      access = "readOnly", type = "string", getter = "connection_request_url"
+    },
+    ["Device.ManagementServer.UpgradesManaged"] = uci("mgmt_srv", "upgrades_managed", {
+      access = "readWrite", type = "boolean", default = "false"
+    }),
+    ["Device.ManagementServer.DefaultActiveNotificationThrottle"] = uci(
+      "mgmt_srv", "defaultactivenotificationthrottle", {
+        access = "readWrite", type = "unsignedInt", default = "0"
+      }),
+    ["Device.ManagementServer.CWMPRetryMinimumWaitInterval"] = uci(
+      "mgmt_srv", "retry_minimum_wait", {
+        access = "readWrite", type = "unsignedInt", range = { { min = 1, max = 65535 } },
+        default = "5"
+      }),
+    ["Device.ManagementServer.CWMPRetryIntervalMultiplier"] = uci(
+      "mgmt_srv", "retry_multiplier", {
+        access = "readWrite", type = "unsignedInt", range = { { min = 1000, max = 65535 } },
+        default = "2000"
+      }),
+  }
+}

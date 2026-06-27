@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /usr/bin/lua /usr/lib/tr69d/cli.lua get "$@"

@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/tr69d.dir/src/main.cpp.o -o tr69d  libtr069_core.a -lpthread /usr/lib/x86_64-linux-gnu/libcurl.so /usr/lib/x86_64-linux-gnu/libxml2.so /usr/lib/x86_64-linux-gnu/liblua5.4.so 

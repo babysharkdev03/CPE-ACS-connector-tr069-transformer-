@@ -1,0 +1,88 @@
+#!/bin/sh
+
+# Applied once on first boot, then removed by OpenWrt.
+uci -q batch <<'EOF'
+set system.@system[0].hostname='dev-rpi5'
+set system.@system[0].timezone='<+07>-7'
+set system.@system[0].zonename='Asia/Bangkok'
+
+set network.lan.proto='static'
+set network.lan.ipaddr='@LAN_IP@'
+set network.lan.netmask='255.255.255.0'
+set network.wwan='interface'
+set network.wwan.proto='dhcp'
+
+add_list firewall.@zone[1].network='wwan'
+
+add firewall rule
+set firewall.@rule[-1].name='Allow-SSH-from-WWAN'
+set firewall.@rule[-1].src='wan'
+set firewall.@rule[-1].proto='tcp'
+set firewall.@rule[-1].dest_port='22'
+set firewall.@rule[-1].target='ACCEPT'
+
+add firewall rule
+set firewall.@rule[-1].name='Allow-LuCI-from-WWAN'
+set firewall.@rule[-1].src='wan'
+set firewall.@rule[-1].proto='tcp'
+set firewall.@rule[-1].dest_port='80 443'
+set firewall.@rule[-1].target='ACCEPT'
+
+add firewall rule
+set firewall.@rule[-1].name='Allow-TR069-Connection-Request'
+set firewall.@rule[-1].src='wan'
+set firewall.@rule[-1].proto='tcp'
+set firewall.@rule[-1].dest_port='7547'
+set firewall.@rule[-1].target='ACCEPT'
+
+add firewall rule
+set firewall.@rule[-1].name='Allow-mDNS-from-WWAN'
+set firewall.@rule[-1].src='wan'
+set firewall.@rule[-1].proto='udp'
+set firewall.@rule[-1].dest_port='5353'
+set firewall.@rule[-1].target='ACCEPT'
+EOF
+
+if [ ! -s /etc/config/wireless ]; then
+	wifi config
+fi
+
+# Remove the disabled factory interface and create our AP plus an optional STA.
+uci -q delete wireless.default_radio0
+uci -q set wireless.radio0.disabled='0'
+uci -q set wireless.radio0.country='@WIFI_COUNTRY@'
+uci -q set wireless.radio0.band='2g'
+uci -q set wireless.radio0.htmode='HT20'
+uci -q set wireless.radio0.channel='auto'
+
+uci -q set wireless.dev_ap='wifi-iface'
+uci -q set wireless.dev_ap.device='radio0'
+uci -q set wireless.dev_ap.network='lan'
+uci -q set wireless.dev_ap.mode='ap'
+uci -q set wireless.dev_ap.ssid='@AP_SSID@'
+uci -q set wireless.dev_ap.encryption='psk2'
+uci -q set wireless.dev_ap.key='@AP_KEY@'
+
+# Start AP first. The recovery service enables STA after the AP is visible and
+# disables STA again if association fails, so SSH fallback remains available.
+uci -q set wireless.dev_sta='wifi-iface'
+uci -q set wireless.dev_sta.device='radio0'
+uci -q set wireless.dev_sta.network='wwan'
+uci -q set wireless.dev_sta.mode='sta'
+uci -q set wireless.dev_sta.encryption='psk2'
+uci -q set wireless.dev_sta.ssid='@STA_SSID@'
+uci -q set wireless.dev_sta.key='@STA_KEY@'
+uci -q set wireless.dev_sta.disabled='1'
+
+uci commit system
+uci commit network
+uci commit firewall
+uci commit wireless
+uci commit tr69
+
+sed -i 's#^root:[^:]*:#root:@ROOT_HASH@:#' /etc/shadow
+/etc/init.d/tr69 enable
+/etc/init.d/dev-wifi-recovery enable
+/etc/init.d/avahi-daemon enable 2>/dev/null || true
+
+exit 0

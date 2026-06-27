@@ -1,0 +1,15 @@
+services:
+  acs:
+    build: .
+    image: dev/acs-mock:1.0
+    container_name: dev-acs-mock
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      ACS_ONLINE_WINDOW: "180"
+    volumes:
+      - acs-data:/data
+
+volumes:
+  acs-data:
